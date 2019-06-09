@@ -1,0 +1,62 @@
+<Aplikacja>:
+	search_lat: coor_lat
+	search_long: coor_long
+    my_map: map
+    pic: image
+    tekst: tekst
+	score: score
+    
+    
+    BoxLayout:
+        orientation: "vertical"
+        
+    
+        BoxLayout:
+            orientation: "horizontal"
+            
+            BoxLayout:
+                MapView:
+					lat: 0
+					long: 0
+                    zoom: 1
+                    id: map
+                    on_touch_down: root.search_location()
+                    MarkerMapLayer:
+                        id: layer
+            BoxLayout:
+                Image:
+                    size_hint_x: 50
+                    id: image 
+        
+             
+                
+		BoxLayout:
+			orientation: "horizontal"
+			height: "50dp"
+			size_hint_y: None
+		
+			Label:
+				text: "Latitude"
+			Label:
+				id: coor_lat
+            Button:
+                text: "GENERATE NEW PICTURE"
+                on_press: root.next_picture()
+            TextInput:
+				id: score
+    		
+
+				
+		BoxLayout:
+            orientation: "horizontal"
+            height: "50dp"
+            size_hint_y: None
+           
+            Label:
+				text: "Longitude"
+			Label:
+				id: coor_long
+            Label:
+				text: "YOUR SCORE"
+            TextInput:
+                id: tekst
