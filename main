@@ -1,0 +1,87 @@
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ObjectProperty
+from kivy.garden.mapview import MapMarker, MarkerMapLayer
+import random
+import function
+from math import pi
+
+class Aplikacja(BoxLayout):
+    my_map = ObjectProperty()
+    pic = ObjectProperty()
+    tekst = ObjectProperty()
+    data_layer = ObjectProperty()
+
+    def __init__(self, **kwargs):
+        super(Aplikacja,self).__init__(**kwargs)
+        self.my_map.map_source="osm-fr"
+
+    def search_location(self):
+        self.data_layer = MarkerMapLayer()
+        self.my_map.add_layer(self.data_layer)
+        self.lati = self.my_map.lat
+        self.long = self.my_map.lon
+
+        print(self.lati)
+        print(self.long)
+        
+        places= [['buddha.jpg', 29.544127, 103.771536],
+                 ['burj.jpg', 25.197191, 55.274445],
+                 ['eiffel.jpg', 48.8583157, 2.2943230],
+                 ['fuji.jpg', 35.360415, 138.727406],
+                 ['gate.jpg', 52.516248, 13.377635],
+                 ['pisa.jpg', 43.722906, 10.396636],
+                 ['sagrada.jpg', 50.06465009, 19.944980],
+                 ['sphinx.jpg', 29.975245, 31.137573],
+                 ['sydney.jpg', -33.856481,  151.215350],
+                 ['taj.jpg' , 27.175478, 78.042102]]
+
+        for i in range(len(places)):
+            if self.pic.source == places[i][0]:
+                s = function.Vincenty(self.lati*pi/180, self.long*pi/180, places[i][1]*pi/180, places[i][2]*pi/180)
+                if s > 500:
+                    self.tekst.text = "DISTANCE BETWEEN THIS PLACE IS {} m".format(round(s, 3))      
+                else:
+                    self.tekst.text = "YOU HAVE A POINT!"
+    
+        try:
+            self.my_map.remove_marker(self.marker)
+        except:
+            pass
+        
+        self.latitude = self.my_map.lat
+        self.longitude = self.my_map.lon
+        
+        self.marker = MapMarker(lat=self.latitude, lon=self.longitude)
+        self.my_map.add_marker(self.marker)
+        
+        self.search_lat.text = "{}".format(round(self.latitude))    
+        self.search_long.text = "{}".format(round(self.longitude))
+    
+    def next_picture(self):
+        szukane_miejsca = [ 'buddha.jpg', 
+                           'burj.jpg',
+                           'eiffel.jpg', 
+                           'fuji.jpg', 
+                           'gate.jpg',  
+                           'pisa.jpg', 
+                           'sagrada.jpg', 
+                           'sphinx.jpg',
+                           'sydney.jpg', 
+                           'taj.jpg' ]
+        self.pic.source = random.choice(szukane_miejsca)
+        
+        try:
+            self.clear()
+        except ValueError:
+            pass
+            
+    def clear(self):
+        self.my_map.remove_layer(self.data_layer)
+        
+class MapViewApp(App):
+    def build(self):
+        return Aplikacja()
+
+if __name__ == '__main__':
+    MapViewApp().run()
