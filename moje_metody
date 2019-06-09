@@ -1,0 +1,46 @@
+def decimalDeg2dms(decimalDeg):
+    '''
+    Metoda przelicza wartość kąta podaną w dziesiętnych stopnia 
+    do wartości kata wyrażonej w stopniach, minutach i sekundach
+    INPUT:
+        decimalDeg [float]: decimal degree (np, 185.209060574544st)
+    OUTPUT: 
+        (d, m, s) [tuple]: (stopnie, minuty, sekundy) (np.(185st, 12min, 32.62sec))
+    '''
+    d = int(decimalDeg)
+    m = int((decimalDeg - d) * 60)
+    s = (decimalDeg - d - m / 60.) * 3600.0
+    return (d, m, s) 
+
+
+
+
+def dms2decimalDeg(st, minut, sec):
+    '''
+    Metoda przelicza wartość kąta podaną w w stopniach, minutach i sekundach 
+    do wartości kata wyrażonej dziesiętnych stopnia 
+    INPUT:
+        st    [int]
+        minut [int]
+        sec     [float]
+    OUTPUT: 
+        deg    [float] : wartośc kąta w dziesiętnych stopnia
+    '''
+    deg = st + minut/60 + sec / 3600.
+    return deg 
+
+
+
+
+if __name__=='__main__':
+    '''
+     __name__, przechowuje nazwę modułu
+    Nazwa modułu może się różnić od sposobu uruchomienia skryptu. 
+    W momencie uruchomienia bezpośrednio skryptu (nie z importu), 
+    moduł przyjmuje nazwę __main__. 
+    '''
+    wynik1 = decimalDeg2dms(185.20906057454428) # wynik: (185, 12, 32.618068359413385)
+    print('wynik1 z main', wynik1)
+
+    wynik2 = dms2decimalDeg(wynik1[0], wynik1[1], wynik1[2])
+    print('wynik2 z main', wynik2)
